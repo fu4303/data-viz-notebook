@@ -1,6 +1,7 @@
 import React from "react";
 import { arc } from "d3-shape";
 import { scaleLinear } from "d3-scale";
+import { format } from "d3-format";
 
 const Gauge = ({ value = 70, min = 0, max = 100, label, units }) => {
   const backgroundArc = arc()
@@ -81,6 +82,23 @@ const Gauge = ({ value = 70, min = 0, max = 100, label, units }) => {
           fill="#6a6a85"
         />
       </svg>
+      <p
+        style={{
+          marginTop: "1em",
+          fontSize: "3em",
+          color: "#6a6a85",
+          fontWeight: "bold",
+          fontFeatureSettings: "'zero', 'tnum' 1",
+        }}
+      >
+        {format(",")(value)}
+      </p>
+      <p style={{ fontSize: "1em", color: "#6a6a85" }}>
+        {label || "label goes here"}
+      </p>
+      <p style={{ fontSize: "1em", color: "#6a6a85" }}>
+        {units || "units go here"}
+      </p>
     </div>
   );
 };
