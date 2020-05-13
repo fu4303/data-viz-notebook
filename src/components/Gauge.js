@@ -1,7 +1,5 @@
 import React from "react";
-import { arc } from "d3-shape";
-import { scaleLinear } from "d3-scale";
-import { format } from "d3-format";
+import { arc, scaleLinear, format } from "d3";
 
 const Gauge = ({ value = 70, min = 0, max = 100, label, units }) => {
   const backgroundArc = arc()

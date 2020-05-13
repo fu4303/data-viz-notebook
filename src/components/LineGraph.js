@@ -1,10 +1,14 @@
 import React, { useRef, useEffect } from "react";
-import { extent } from "d3-array";
-import { select } from "d3-selection";
-import { scaleLinear, scaleTime } from "d3-scale";
-import { timeParse } from "d3-time-format";
-import { line } from "d3-shape";
-import { axisLeft, axisBottom } from "d3-axis";
+import {
+  extent,
+  select,
+  scaleLinear,
+  scaleTime,
+  timeParse,
+  line,
+  axisLeft,
+  axisBottom,
+} from "d3";
 import { dataset } from "../data/weather";
 import dimensions from "../utils/dimensions";
 
