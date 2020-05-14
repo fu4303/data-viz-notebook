@@ -12,11 +12,12 @@ import {
 import { dataset } from "../data/weather";
 import dimensions from "../utils/dimensions";
 
+const dateParser = timeParse("%Y-%m-%d");
+const xAccessor = (d) => dateParser(d.date);
+const yAccessor = (d) => d.temperatureMax;
+
 const LineGraph = () => {
   const svgRef = useRef();
-  const dateParser = timeParse("%Y-%m-%d");
-  const xAccessor = (d) => dateParser(d.date);
-  const yAccessor = (d) => d.temperatureMax;
 
   useEffect(() => {
     const svgElement = select(svgRef.current);
@@ -44,6 +45,7 @@ const LineGraph = () => {
       .attr("y", freezingTemperaturePlacement)
       .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
       .attr("fill", "#e0f3f3");
+
     const xScale = scaleTime()
       .domain(extent(dataset, xAccessor))
       .range([0, dimensions.boundedWidth]);
@@ -68,7 +70,7 @@ const LineGraph = () => {
       .style("transform", `translateY(${dimensions.boundedHeight}px)`);
     // yAxis
     bounds.append("g").call(yAxisGenerator);
-  }, [dataset]);
+  }, []);
 
   return <svg ref={svgRef}></svg>;
 };
