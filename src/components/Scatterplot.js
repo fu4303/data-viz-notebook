@@ -51,9 +51,27 @@ const Scatterplot = () => {
       .call(xAxisGenerator)
       .style("transform", `translateY(${dimensions.boundedHeight}px)`);
 
+    const xAxisLabel = xAxis
+      .append("text")
+      .attr("x", dimensions.boundedWidth / 2)
+      .attr("y", dimensions.margin.bottom - 10)
+      .attr("fill", "black")
+      .style("font-size", "1.4em")
+      .html("Dew point (&deg;F)");
+
     const yAxisGenerator = axisLeft().scale(yScale).ticks(4);
 
     const yAxis = bounds.append("g").call(yAxisGenerator);
+
+    const yAxisLabel = yAxis
+      .append("text")
+      .attr("x", -dimensions.boundedHeight / 2)
+      .attr("y", -dimensions.margin.left + 30)
+      .style("transform", "rotate(-90deg)")
+      .attr("fill", "black")
+      .style("font-size", "1.4em")
+      .style("text-anchor", "middle")
+      .html("Relative humidity");
   }, []);
   return <svg ref={svgRef}></svg>;
 };
