@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import Scatterplot from "./components/Scatterplot";
 import LineGraph from "./components/LineGraph";
 import Gauge from "./components/Gauge";
 
@@ -7,6 +8,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <Scatterplot />
         <LineGraph />
         <Gauge value={70} label="test label" units="test units" />
       </header>
