@@ -3,25 +3,26 @@ import { extent, select, scaleLinear, axisBottom, axisLeft } from "d3";
 import { dataset } from "../data/weather";
 import dimensions from "../utils/dimensions";
 
+const xAccessor = (d) => d.dewPoint;
+const yAccessor = (d) => d.humidity;
+const colorAccessor = (d) => d.cloudCover;
+
+const xScale = scaleLinear()
+  .domain(extent(dataset, xAccessor))
+  .range([0, dimensions.boundedWidth])
+  .nice();
+
+const yScale = scaleLinear()
+  .domain(extent(dataset, yAccessor))
+  .range([dimensions.boundedHeight, 0])
+  .nice();
+
+const colorScale = scaleLinear()
+  .domain(extent(dataset, colorAccessor))
+  .range(["skyblue", "darkslategrey"]);
+
 const Scatterplot = () => {
   const svgRef = useRef();
-  const xAccessor = (d) => d.dewPoint;
-  const yAccessor = (d) => d.humidity;
-  const colorAccessor = (d) => d.cloudCover;
-
-  const xScale = scaleLinear()
-    .domain(extent(dataset, xAccessor))
-    .range([0, dimensions.boundedWidth])
-    .nice();
-
-  const yScale = scaleLinear()
-    .domain(extent(dataset, yAccessor))
-    .range([dimensions.boundedHeight, 0])
-    .nice();
-
-  const colorScale = scaleLinear()
-    .domain(extent(dataset, colorAccessor))
-    .range(["skyblue", "darkslategrey"]);
 
   useEffect(() => {
     const svgElement = select(svgRef.current)
@@ -50,8 +51,8 @@ const Scatterplot = () => {
       .append("g")
       .call(xAxisGenerator)
       .style("transform", `translateY(${dimensions.boundedHeight}px)`);
-
-    const xAxisLabel = xAxis
+    // xAxisLabel
+    xAxis
       .append("text")
       .attr("x", dimensions.boundedWidth / 2)
       .attr("y", dimensions.margin.bottom - 10)
@@ -62,8 +63,8 @@ const Scatterplot = () => {
     const yAxisGenerator = axisLeft().scale(yScale).ticks(4);
 
     const yAxis = bounds.append("g").call(yAxisGenerator);
-
-    const yAxisLabel = yAxis
+    // yAxisLabel
+    yAxis
       .append("text")
       .attr("x", -dimensions.boundedHeight / 2)
       .attr("y", -dimensions.margin.left + 30)
