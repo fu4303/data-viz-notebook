@@ -5,7 +5,7 @@ const MeanLine = ({ dimensions, meanValue }) => {
     <>
       <text
         x={meanValue}
-        y={7}
+        y={-7}
         fill="maroon"
         style={{ fontSize: "12px", textAnchor: "middle" }}
       >
@@ -15,7 +15,7 @@ const MeanLine = ({ dimensions, meanValue }) => {
         x1={meanValue}
         x2={meanValue}
         y1={dimensions.boundedHeight}
-        y2={10}
+        y2={0}
         stroke="maroon"
         strokeDasharray="2 4"
       />
