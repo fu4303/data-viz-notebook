@@ -13,6 +13,7 @@ import {
 import Chart from "./Chart";
 import Axis from "./Axis";
 import Line from "./Line";
+import FreezingBox from "./FreezingBox";
 import { useChartDimensions } from "../utils/utils";
 
 const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
@@ -22,7 +23,7 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
     .domain(extent(data, yAccessor))
     .range([dimensions.boundedHeight, 0]);
 
-  const freezingTemperaturePlacement = yScale(32);
+  const freezingPoint = yScale(32);
 
   const xScale = scaleTime()
     .domain(extent(data, xAccessor))
@@ -42,7 +43,6 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
   const yTicks = yScale.ticks(10);
   const formatDate = timeFormat("%-b %-d");
 
-  console.log(yTicks);
   return (
     <div ref={ref}>
       <Chart dimensions={dimensions}>
@@ -60,6 +60,7 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
           label={label}
           ticks={yTicks}
         />
+        <FreezingBox dimensions={dimensions} freezingPoint={freezingPoint} />
 
         <Line linePath={linePath} />
       </Chart>
