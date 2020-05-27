@@ -1,15 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import {
-  extent,
-  select,
-  scaleLinear,
-  scaleTime,
-  timeParse,
-  line,
-  axisLeft,
-  axisBottom,
-  timeFormat,
-} from "d3";
+import React from "react";
+import { extent, scaleLinear, scaleTime, line, timeFormat } from "d3";
 import Chart from "./Chart";
 import Axis from "./Axis";
 import Line from "./Line";
@@ -61,7 +51,6 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
           ticks={yTicks}
         />
         <FreezingBox dimensions={dimensions} freezingPoint={freezingPoint} />
-
         <Line linePath={linePath} />
       </Chart>
     </div>
