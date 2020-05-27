@@ -8,71 +8,63 @@ import {
   line,
   axisLeft,
   axisBottom,
+  timeFormat,
 } from "d3";
-import { dataset } from "../data/weather";
-import dimensions from "../utils/dimensions";
+import Chart from "./Chart";
+import Axis from "./Axis";
+import Line from "./Line";
+import { useChartDimensions } from "../utils/utils";
 
-const dateParser = timeParse("%Y-%m-%d");
-const xAccessor = (d) => dateParser(d.date);
-const yAccessor = (d) => d.temperatureMax;
+const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
+  const [ref, dimensions] = useChartDimensions();
 
-const LineGraph = () => {
-  const svgRef = useRef();
+  const yScale = scaleLinear()
+    .domain(extent(data, yAccessor))
+    .range([dimensions.boundedHeight, 0]);
 
-  useEffect(() => {
-    const svgElement = select(svgRef.current);
+  const freezingTemperaturePlacement = yScale(32);
 
-    svgElement
-      .attr("width", dimensions.width)
-      .attr("height", dimensions.height);
+  const xScale = scaleTime()
+    .domain(extent(data, xAccessor))
+    .range([0, dimensions.boundedWidth]);
 
-    const bounds = svgElement
-      .append("g")
-      .style(
-        "transform",
-        `translate(${dimensions.margin.left}px, ${dimensions.margin.top}px)`
-      );
-    const yScale = scaleLinear()
-      .domain(extent(dataset, yAccessor))
-      .range([dimensions.boundedHeight, 0]);
+  const lineGenerator = line()
+    .x((d) => xScale(xAccessor(d)))
+    .y((d) => yScale(yAccessor(d)));
 
-    const freezingTemperaturePlacement = yScale(32);
-    // freezing temperature box
-    bounds
-      .append("rect")
-      .attr("x", 0)
-      .attr("width", dimensions.boundedWidth)
-      .attr("y", freezingTemperaturePlacement)
-      .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
-      .attr("fill", "#e0f3f3");
+  const linePath = lineGenerator(data);
+  const numberOfTicks =
+    dimensions.boundedWidth < 600
+      ? dimensions.boundedWidth / 100
+      : dimensions.boundedWidth / 250;
 
-    const xScale = scaleTime()
-      .domain(extent(dataset, xAccessor))
-      .range([0, dimensions.boundedWidth]);
+  const xTicks = xScale.ticks(numberOfTicks);
+  const yTicks = yScale.ticks(10);
+  const formatDate = timeFormat("%-b %-d");
 
-    const lineGenerator = line()
-      .x((d) => xScale(xAccessor(d)))
-      .y((d) => yScale(yAccessor(d)));
-    // graph line
-    bounds
-      .append("path")
-      .attr("d", lineGenerator(dataset))
-      .attr("fill", "none")
-      .attr("stroke", "#af9358")
-      .attr("stroke-width", 2);
+  console.log(yTicks);
+  return (
+    <div ref={ref}>
+      <Chart dimensions={dimensions}>
+        <Axis
+          dimensions={dimensions}
+          direction="x"
+          scale={xScale}
+          ticks={xTicks}
+          formatTick={formatDate}
+        />
+        <Axis
+          dimensions={dimensions}
+          direction="y"
+          scale={yScale}
+          label={label}
+          ticks={yTicks}
+        />
 
-    const xAxisGenerator = axisBottom().scale(xScale);
-    const yAxisGenerator = axisLeft().scale(yScale);
-    // xAxis
-    bounds
-      .append("g")
-      .call(xAxisGenerator)
-      .style("transform", `translateY(${dimensions.boundedHeight}px)`);
-    // yAxis
-    bounds.append("g").call(yAxisGenerator);
-  }, []);
-
-  return <svg ref={svgRef}></svg>;
+        <Line linePath={linePath} />
+      </Chart>
+    </div>
+  );
 };
 
 export default LineGraph;
