@@ -24,10 +24,7 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
     .y((d) => yScale(yAccessor(d)));
 
   const linePath = lineGenerator(data);
-  const numberOfTicks =
-    dimensions.boundedWidth < 600
-      ? dimensions.boundedWidth / 100
-      : dimensions.boundedWidth / 250;
+  const numberOfTicks = dimensions.boundedWidth / 100;
 
   const xTicks = xScale.ticks(numberOfTicks);
   const yTicks = yScale.ticks(10);
