@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
-import { extent, histogram, scaleLinear, max, format } from "d3";
+import React from "react";
+import { extent, histogram, scaleLinear, max, format, mean } from "d3";
 import Chart from "./Chart";
 import Bars from "./Bars";
 import Axis from "./Axis";
+import MeanLine from "./MeanLine";
 import { useChartDimensions } from "../utils/utils";
 
 const Histogram = ({ data, xAccessor, yAccessor, label }) => {
@@ -36,6 +37,8 @@ const Histogram = ({ data, xAccessor, yAccessor, label }) => {
   const xLabelAccessor = (d) =>
     xAccessorScaled(d) + (xScale(d.x1) - xScale(d.x0)) / 2;
   const yLabelAccessor = (d) => yAccessorScaled(d) - 8;
+  const meanValue = mean(data, xAccessor);
+  const meanValueScaled = xScale(meanValue);
 
   const ticks = xScale.ticks(thresholds);
 
@@ -60,6 +63,7 @@ const Histogram = ({ data, xAccessor, yAccessor, label }) => {
           xLabelAccessor={xLabelAccessor}
           yLabelAccessor={yLabelAccessor}
         />
+        <MeanLine dimensions={dimensions} meanValue={meanValueScaled} />
       </Chart>
     </div>
   );
