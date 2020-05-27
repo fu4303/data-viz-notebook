@@ -12,7 +12,7 @@ const Bars = ({
   return (
     <>
       {data.map((d, i) => (
-        <>
+        <React.Fragment key={i}>
           {d.length && (
             <text
               x={xLabelAccessor(d)}
@@ -29,14 +29,13 @@ const Bars = ({
           )}
 
           <rect
-            key={i}
             x={xAccessor(d)}
             y={yAccessor(d)}
             width={widthAccessor(d)}
             height={heightAccessor(d)}
             fill="cornflowerblue"
           />
-        </>
+        </React.Fragment>
       ))}
     </>
   );
