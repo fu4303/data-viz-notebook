@@ -50,7 +50,7 @@ const Histogram = ({ data, xAccessor, yAccessor, label }) => {
           dimensions={dimensions}
           direction="x"
           scale={xScale}
-          label="Humidity"
+          label={label}
           ticks={ticks}
           formatTick={formatTick}
         />
