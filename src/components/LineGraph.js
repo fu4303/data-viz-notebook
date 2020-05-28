@@ -33,6 +33,8 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
   return (
     <div ref={ref}>
       <Chart dimensions={dimensions}>
+        <FreezingBox dimensions={dimensions} freezingPoint={freezingPoint} />
+        <Line linePath={linePath} />
         <Axis
           dimensions={dimensions}
           direction="x"
@@ -47,8 +49,6 @@ const LineGraph = ({ data, xAccessor, yAccessor, label }) => {
           label={label}
           ticks={yTicks}
         />
-        <FreezingBox dimensions={dimensions} freezingPoint={freezingPoint} />
-        <Line linePath={linePath} />
       </Chart>
     </div>
   );
