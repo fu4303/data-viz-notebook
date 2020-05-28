@@ -1,80 +1,60 @@
 import React, { useRef, useEffect } from "react";
 import { extent, select, scaleLinear, axisBottom, axisLeft } from "d3";
-import { dataset } from "../data/weather";
-import dimensions from "../utils/dimensions";
+import Chart from "./Chart";
+import Axis from "./Axis";
+import Circles from "./Circles";
+import { useChartDimensions } from "../utils/utils";
 
-const xAccessor = (d) => d.dewPoint;
-const yAccessor = (d) => d.humidity;
-const colorAccessor = (d) => d.cloudCover;
+const Scatterplot = ({ data, xAccessor, yAccessor, colorAccessor }) => {
+  const [ref, dimensions] = useChartDimensions();
 
-const xScale = scaleLinear()
-  .domain(extent(dataset, xAccessor))
-  .range([0, dimensions.boundedWidth])
-  .nice();
+  const xScale = scaleLinear()
+    .domain(extent(data, xAccessor))
+    .range([0, dimensions.boundedWidth])
+    .nice();
 
-const yScale = scaleLinear()
-  .domain(extent(dataset, yAccessor))
-  .range([dimensions.boundedHeight, 0])
-  .nice();
+  const yScale = scaleLinear()
+    .domain(extent(data, yAccessor))
+    .range([dimensions.boundedHeight, 0])
+    .nice();
 
-const colorScale = scaleLinear()
-  .domain(extent(dataset, colorAccessor))
-  .range(["skyblue", "darkslategrey"]);
+  const colorScale = scaleLinear()
+    .domain(extent(data, colorAccessor))
+    .range(["skyblue", "darkslategrey"]);
 
-const Scatterplot = () => {
-  const svgRef = useRef();
+  const xAccessorScaled = (d) => xScale(xAccessor(d));
+  const yAccessorScaled = (d) => yScale(yAccessor(d));
+  const colorAccessorScaled = (d) => colorScale(colorAccessor(d));
 
-  useEffect(() => {
-    const svgElement = select(svgRef.current)
-      .attr("width", dimensions.width)
-      .attr("height", dimensions.height);
+  const xTicks = xScale.ticks(10);
+  const yTicks = yScale.ticks(4);
 
-    const bounds = svgElement
-      .append("g")
-      .style(
-        "transform",
-        `translate(${dimensions.margin.left}px, ${dimensions.margin.top}px)`
-      );
-
-    bounds
-      .selectAll("circle")
-      .data(dataset)
-      .join("circle")
-      .attr("cx", (d) => xScale(xAccessor(d)))
-      .attr("cy", (d) => yScale(yAccessor(d)))
-      .attr("r", 5)
-      .attr("fill", (d) => colorScale(colorAccessor(d)));
-
-    const xAxisGenerator = axisBottom().scale(xScale);
-
-    const xAxis = bounds
-      .append("g")
-      .call(xAxisGenerator)
-      .style("transform", `translateY(${dimensions.boundedHeight}px)`);
-    // xAxisLabel
-    xAxis
-      .append("text")
-      .attr("x", dimensions.boundedWidth / 2)
-      .attr("y", dimensions.margin.bottom - 10)
-      .attr("fill", "black")
-      .style("font-size", "1.4em")
-      .html("Dew point (&deg;F)");
-
-    const yAxisGenerator = axisLeft().scale(yScale).ticks(4);
-
-    const yAxis = bounds.append("g").call(yAxisGenerator);
-    // yAxisLabel
-    yAxis
-      .append("text")
-      .attr("x", -dimensions.boundedHeight / 2)
-      .attr("y", -dimensions.margin.left + 30)
-      .style("transform", "rotate(-90deg)")
-      .attr("fill", "black")
-      .style("font-size", "1.4em")
-      .style("text-anchor", "middle")
-      .html("Relative humidity");
-  }, []);
-  return <svg ref={svgRef}></svg>;
+  return (
+    <div ref={ref}>
+      <Chart dimensions={dimensions}>
+        <Circles
+          data={data}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+          colorAccessor={colorAccessorScaled}
+        />
+        <Axis
+          dimensions={dimensions}
+          direction="x"
+          scale={xScale}
+          ticks={xTicks}
+          label="Dew point (&deg;F)"
+        />
+        <Axis
+          dimensions={dimensions}
+          direction="y"
+          scale={yScale}
+          ticks={yTicks}
+          label="Relative humidity"
+        />
+      </Chart>
+    </div>
+  );
 };
 
 export default Scatterplot;
