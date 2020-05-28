@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import Histogram from "./components/Histogram";
-import Scatterplot from "./components/Scatterplot";
-import LineGraph from "./components/LineGraph";
-import Gauge from "./components/Gauge";
+import Dashboard from "./components/Dashboard";
+// import Gauge from "./components/Gauge";
+import { dataset } from "./data/weather";
 
 function App() {
+  const [data, setData] = useState(dataset);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <Histogram />
-        <Scatterplot />
-        <LineGraph />
-        <Gauge value={70} label="test label" units="test units" />
-      </header>
+      <header className="App-header"></header>
+      <main>
+        <Dashboard data={data} />
+        {/* <Gauge value={70} label="test label" units="test units" /> */}
+      </main>
     </div>
   );
 }
