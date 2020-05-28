@@ -46,14 +46,6 @@ const Histogram = ({ data, xAccessor, yAccessor, label }) => {
   return (
     <div ref={ref}>
       <Chart dimensions={dimensions}>
-        <Axis
-          dimensions={dimensions}
-          direction="x"
-          scale={xScale}
-          label={label}
-          ticks={ticks}
-          formatTick={formatTick}
-        />
         <Bars
           data={bins}
           xAccessor={xAccessorScaled}
@@ -64,6 +56,14 @@ const Histogram = ({ data, xAccessor, yAccessor, label }) => {
           yLabelAccessor={yLabelAccessor}
         />
         <MeanLine dimensions={dimensions} meanValue={meanValueScaled} />
+        <Axis
+          dimensions={dimensions}
+          direction="x"
+          scale={xScale}
+          label={label}
+          ticks={ticks}
+          formatTick={formatTick}
+        />
       </Chart>
     </div>
   );
