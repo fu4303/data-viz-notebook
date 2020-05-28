@@ -21,7 +21,7 @@ function AxisBottom({
   return (
     <g transform={`translate(0, ${dimensions.boundedHeight})`}>
       <line x1={0} x2={dimensions.boundedWidth} y1={0} y2={0} stroke="black" />
-      {ticks.map((tick, i) => (
+      {ticks.map((tick) => (
         <React.Fragment key={tick}>
           <line
             x1={scale(tick)}
@@ -57,7 +57,7 @@ function AxisLeft({
   return (
     <g transform={`translate(${0}, 0)`}>
       <line x1={0} x2={0} y1={dimensions.boundedHeight} y2={0} stroke="black" />
-      {ticks.map((tick, i) => (
+      {ticks.map((tick) => (
         <React.Fragment key={tick}>
           <line
             x1={0}
@@ -67,7 +67,7 @@ function AxisLeft({
             stroke="black"
           />
           <text
-            transform={`translate(-15, ${scale(tick)})`}
+            transform={`translate(-15, ${scale(tick) + 3})`}
             style={{ fontSize: "10px", textAnchor: "middle" }}
           >
             {formatTick(tick)}
