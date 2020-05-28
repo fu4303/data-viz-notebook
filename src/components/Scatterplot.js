@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import { extent, select, scaleLinear, axisBottom, axisLeft } from "d3";
+import React from "react";
+import { extent, scaleLinear } from "d3";
 import Chart from "./Chart";
 import Axis from "./Axis";
 import Circles from "./Circles";
