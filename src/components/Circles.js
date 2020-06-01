@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import Tooltip from "./Tooltip";
 
-const Circles = ({ data, xAccessor, yAccessor, colorAccessor }) => {
+const Circles = ({
+  data,
+  xAccessor,
+  yAccessor,
+  colorAccessor,
+  unscaledX,
+  unscaledY,
+  unscaledColor,
+}) => {
   const [isShown, setIsShown] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [tooltipInfo, setTooltipInfo] = useState({ x: 0, y: 0, content: [] });
   return (
     <>
       {data.map((d, i) => (
@@ -14,18 +22,28 @@ const Circles = ({ data, xAccessor, yAccessor, colorAccessor }) => {
           r={5}
           fill={colorAccessor(d)}
           onMouseEnter={() => {
-            setTooltipPosition({ x: xAccessor(d), y: yAccessor(d) });
+            setTooltipInfo({
+              x: xAccessor(d),
+              y: yAccessor(d),
+              content: [
+                `Dew Point: ${unscaledX(d)}`,
+                `Humidity: ${unscaledY(d)}`,
+                `Cloud cover: ${unscaledColor(d)}`,
+              ],
+            });
             return setIsShown(true);
           }}
           onMouseLeave={() => setIsShown(false)}
         />
       ))}
+
       <Tooltip
-        x={tooltipPosition.x}
-        y={tooltipPosition.y}
+        x={tooltipInfo.x}
+        y={tooltipInfo.y}
         width={200}
-        height={40}
+        height={50}
         isShown={isShown}
+        content={tooltipInfo.content}
       />
     </>
   );
