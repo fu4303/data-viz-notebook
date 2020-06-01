@@ -1,6 +1,14 @@
 import React from "react";
 
-const Tooltip = ({ x, y, width, height, isShown = false, content }) => {
+const Tooltip = ({
+  x,
+  y,
+  width,
+  height,
+  isShown = false,
+  content,
+  dimensions,
+}) => {
   let boxX1, boxX2, boxY1, boxY2;
   let pointRight = `${x + 5},${y - 10}`;
   let pointBottom = `${x},${y - 5}`;
@@ -8,7 +16,12 @@ const Tooltip = ({ x, y, width, height, isShown = false, content }) => {
 
   if (x < width / 2) {
     boxX1 = x / 2;
-    boxX2 = x / 2 + width;
+    boxX2 = boxX1 + width;
+    boxY1 = y - 10 - height;
+    boxY2 = y - 10;
+  } else if (x > dimensions.boundedWidth - width / 2) {
+    boxX2 = x + (dimensions.boundedWidth - x) / 2;
+    boxX1 = boxX2 - width;
     boxY1 = y - 10 - height;
     boxY2 = y - 10;
   } else {
