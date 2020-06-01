@@ -3,6 +3,7 @@ import Tooltip from "./Tooltip";
 
 const Circles = ({
   data,
+  dimensions,
   xAccessor,
   yAccessor,
   colorAccessor,
@@ -38,6 +39,7 @@ const Circles = ({
       ))}
 
       <Tooltip
+        dimensions={dimensions}
         x={tooltipInfo.x}
         y={tooltipInfo.y}
         width={200}
