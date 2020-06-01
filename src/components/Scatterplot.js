@@ -37,6 +37,9 @@ const Scatterplot = ({ data, xAccessor, yAccessor, colorAccessor }) => {
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           colorAccessor={colorAccessorScaled}
+          unscaledX={xAccessor}
+          unscaledY={yAccessor}
+          unscaledColor={colorAccessor}
         />
         <Axis
           dimensions={dimensions}
