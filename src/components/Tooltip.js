@@ -9,7 +9,9 @@ const Tooltip = ({
   content,
   dimensions,
 }) => {
-  let boxX1, boxX2, boxY1, boxY2;
+  let boxX1, boxX2;
+  let boxY2 = y - 10;
+  let boxY1 = boxY2 - height;
   let pointRight = `${x + 5},${y - 10}`;
   let pointBottom = `${x},${y - 5}`;
   let pointLeft = `${x - 5},${y - 10}`;
@@ -17,18 +19,12 @@ const Tooltip = ({
   if (x < width / 2) {
     boxX1 = x / 2;
     boxX2 = boxX1 + width;
-    boxY1 = y - 10 - height;
-    boxY2 = y - 10;
   } else if (x > dimensions.boundedWidth - width / 2) {
     boxX2 = x + (dimensions.boundedWidth - x) / 2;
     boxX1 = boxX2 - width;
-    boxY1 = y - 10 - height;
-    boxY2 = y - 10;
   } else {
     boxX1 = x - width / 2;
     boxX2 = x + width / 2;
-    boxY1 = y - 10 - height;
-    boxY2 = y - 10;
   }
   const topLeft = `${boxX1},${boxY1}`;
   const bottomLeft = `${boxX1},${boxY2}`;
