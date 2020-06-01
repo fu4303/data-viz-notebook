@@ -34,6 +34,7 @@ const Scatterplot = ({ data, xAccessor, yAccessor, colorAccessor }) => {
       <Chart dimensions={dimensions}>
         <Circles
           data={data}
+          dimensions={dimensions}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           colorAccessor={colorAccessorScaled}
