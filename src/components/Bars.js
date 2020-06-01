@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import Tooltip from "./Tooltip";
 
 const Bars = ({
   data,
+  dimensions,
   xAccessor,
   yAccessor,
   widthAccessor,
@@ -9,6 +11,8 @@ const Bars = ({
   xLabelAccessor,
   yLabelAccessor,
 }) => {
+  const [isShown, setIsShown] = useState(false);
+  const [tooltipInfo, setTooltipInfo] = useState([]);
   return (
     <>
       {data.map((d, i) => (
@@ -34,9 +38,25 @@ const Bars = ({
             width={widthAccessor(d)}
             height={heightAccessor(d)}
             fill="cornflowerblue"
+            onMouseEnter={() => {
+              setTooltipInfo({
+                x: xAccessor(d) + widthAccessor(d) / 2,
+                y: yAccessor(d),
+                content: [`${d.length}`],
+              });
+              return setIsShown(true);
+            }}
+            onMouseLeave={() => setIsShown(false)}
           />
         </React.Fragment>
       ))}
+      <Tooltip
+        x={tooltipInfo.x}
+        y={tooltipInfo.y}
+        isShown={isShown}
+        content={tooltipInfo.content}
+        dimensions={dimensions}
+      />
     </>
   );
 };
