@@ -22,23 +22,37 @@ const Circles = ({ data, xAccessor, yAccessor, colorAccessor }) => {
       <Tooltip
         x={tooltipPosition.x}
         y={tooltipPosition.y}
-        width={100}
-        height={100}
+        width={200}
+        height={40}
+        isShown={isShown}
       />
     </>
   );
 };
 
-const Tooltip = ({ x, y, width, height }) => {
+const Tooltip = ({ x, y, width, height, isShown }) => {
+  const points = [
+    `${x - width / 2},${y - 10 - height}`,
+    `${x + width / 2},${y - 10 - height}`,
+    `${x + width / 2},${y - 10}`,
+    `${x + 5},${y - 10}`,
+    `${x},${y - 5}`,
+    `${x - 5},${y - 10}`,
+    `${x - width / 2},${y - 10}`,
+  ].join(" ");
+
+  if (!isShown) return null;
   return (
-    <g transform={`translate(${x - width / 2} ${y - height - 10})`}>
-      <rect width={width} height={height} fill="white" />
+    <g>
+      <polygon points={points} stroke="blue" strokeWidth="1" fill="white" />
       <text
-        transform={`translate(${width / 2} ${height / 2})`}
+        x={x}
+        y={y - 10 - height / 2}
         style={{
           color: "black",
           textAnchor: "middle",
           fontSize: "12px",
+          alignmentBaseline: "middle",
         }}
       >
         tooltip
