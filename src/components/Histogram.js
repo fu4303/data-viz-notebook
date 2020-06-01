@@ -48,6 +48,7 @@ const Histogram = ({ data, xAccessor, yAccessor, label }) => {
       <Chart dimensions={dimensions}>
         <Bars
           data={bins}
+          dimensions={dimensions}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessor}
