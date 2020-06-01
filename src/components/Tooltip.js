@@ -3,8 +3,8 @@ import React from "react";
 const Tooltip = ({
   x,
   y,
-  width,
-  height,
+  width = 200,
+  height = 50,
   isShown = false,
   content,
   dimensions,
