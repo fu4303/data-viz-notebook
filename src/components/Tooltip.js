@@ -9,13 +9,8 @@ const Tooltip = ({
   content,
   dimensions,
 }) => {
-  let boxX1, boxX2;
-  let boxY2 = y - 10;
-  let boxY1 = boxY2 - height;
-  let pointRight = `${x + 5},${y - 10}`;
-  let pointBottom = `${x},${y - 5}`;
-  let pointLeft = `${x - 5},${y - 10}`;
-
+  let boxX1, boxX2, boxY1, boxY2, pointRight, pointMiddle, pointLeft, points;
+  let isUpsideDown = false;
   if (x < width / 2) {
     boxX1 = x / 2;
     boxX2 = boxX1 + width;
@@ -26,20 +21,44 @@ const Tooltip = ({
     boxX1 = x - width / 2;
     boxX2 = x + width / 2;
   }
+  if (y - height - 10 < 0) {
+    boxY1 = y + 10;
+    boxY2 = boxY1 + height;
+    pointRight = `${x + 5},${y + 10}`;
+    pointMiddle = `${x},${y + 5}`;
+    pointLeft = `${x - 5},${y + 10}`;
+    isUpsideDown = true;
+  } else {
+    boxY2 = y - 10;
+    boxY1 = boxY2 - height;
+    pointRight = `${x + 5},${y - 10}`;
+    pointMiddle = `${x},${y - 5}`;
+    pointLeft = `${x - 5},${y - 10}`;
+  }
   const topLeft = `${boxX1},${boxY1}`;
   const bottomLeft = `${boxX1},${boxY2}`;
   const topRight = `${boxX2},${boxY1}`;
   const bottomRight = `${boxX2},${boxY2}`;
 
-  const points = [
-    topLeft,
-    topRight,
-    bottomRight,
-    pointRight,
-    pointBottom,
-    pointLeft,
-    bottomLeft,
-  ].join(" ");
+  points = isUpsideDown
+    ? [
+        topLeft,
+        pointLeft,
+        pointMiddle,
+        pointRight,
+        topRight,
+        bottomRight,
+        bottomLeft,
+      ].join(" ")
+    : [
+        topLeft,
+        topRight,
+        bottomRight,
+        pointRight,
+        pointMiddle,
+        pointLeft,
+        bottomLeft,
+      ].join(" ");
 
   if (!isShown) return null;
   return (
@@ -49,7 +68,11 @@ const Tooltip = ({
         <text
           key={i}
           x={boxX1 + width / 2}
-          y={y - 20 - height / 2 + i * 12}
+          y={
+            isUpsideDown
+              ? y + 20 + height / 2 - i * 12
+              : y - 20 - height / 2 + i * 12
+          }
           style={{
             color: "black",
             textAnchor: "middle",
