@@ -68,11 +68,7 @@ const Tooltip = ({
         <text
           key={i}
           x={boxX1 + width / 2}
-          y={
-            isUpsideDown
-              ? y + 20 + height / 2 - i * 12
-              : y - 20 - height / 2 + i * 12
-          }
+          y={isUpsideDown ? y + 23 + i * 12 : y - 25 - height / 2 + i * 12}
           style={{
             color: "black",
             textAnchor: "middle",
